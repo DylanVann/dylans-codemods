@@ -1,10 +1,15 @@
 import _ from 'lodash'
 
+/**
+ * This codemod converts code written with "babel-plugin-jsx-control-statements" 
+ * to plain JavaScript.
+ */
 export default function transformer(file, api) {
   const j = api.jscodeshift
   return j(file.source)
     .find(j.JSXElement)
     .filter((value) => _.get(value, 'value.openingElement.name.name') === 'If')
+    .forEach((v) => console.log(v))
     .forEach((path) => {
       const children = _.get(path, 'value.children')
       const attributes = _.get(path, 'value.openingElement.attributes')
@@ -18,8 +23,12 @@ export default function transformer(file, api) {
         j.jsxClosingElement(j.jsxIdentifier('React.Fragment')),
         children,
       )
-      const expression = j.logicalExpression('&&', left, right)
-      //j(path).replaceWith(expression)
+      let expression = j.logicalExpression('&&', left, right)
+      const isInsideJsx = _.get(path, 'parentPath.name') === 'children'
+      if (isInsideJsx) {
+        expression = j.jsxExpressionContainer(expression)
+      }
+      j(path).replaceWith(expression)
     })
     .toSource()
 }

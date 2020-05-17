@@ -1,35 +1,26 @@
 {
-    "name": "dylans-codemods",
-    "version": "0.0.0",
-    "private": true,
-    "description": "Transforms for use with JSCodeshift.",
-    "homepage": "https://github.com/DylanVann/dylans-codemods#readme",
-    "bugs": "https://github.com/DylanVann/dylans-codemods/issues",
-    "repository": "DylanVann/dylans-codemods",
-    "license": "MIT",
-    "author": "Dylan Vann <dylan@dylanvann.com> (https://dylanvann.com)",
-    "bin": {
-        "add-carets": "scripts/add-carets.js"
-    },
-    "scripts": {
-        "test": "jest"
-    },
-    "prettier": {
-        "semi": false,
-        "singleQuote": true,
-        "trailingComma": "all"
-    },
-    "dependencies": {
-        "@babel/runtime": "^7.4.2",
-        "fs-extra": "^7.0.1",
-        "jscodeshift": "npm:@dylanvann/jscodeshift@0.6.4"
-    },
-    "devDependencies": {
-        "@babel/core": "^7.4.0",
-        "@babel/preset-env": "^7.4.2",
-        "babel-jest": "^24.5.0",
-        "execa": "^1.0.0",
-        "jest": "24.5.0",
-        "lodash": "^4.17.11"
-    }
+  "name": "dylans-codemods",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Transforms for use with JSCodeshift.",
+  "homepage": "https://github.com/DylanVann/dylans-codemods#readme",
+  "bugs": "https://github.com/DylanVann/dylans-codemods/issues",
+  "repository": "DylanVann/dylans-codemods",
+  "license": "MIT",
+  "author": "Dylan Vann <dylan@dylanvann.com> (https://dylanvann.com)",
+  "scripts": {
+    "test": "jest"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "jest": "26.0.1",
+    "jscodeshift": "npm:@dylanvann/jscodeshift@0.6.4",
+    "lodash": "^4.17.15"
+  }
 }
