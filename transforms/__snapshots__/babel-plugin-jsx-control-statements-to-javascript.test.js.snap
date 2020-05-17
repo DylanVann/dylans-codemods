@@ -6,6 +6,16 @@ exports[`choose 1`] = `
 }"
 `;
 
+exports[`choose inside element 1`] = `
+"function MyComp() {
+  return (
+    <span>
+      {test1 ? <span>IfBlock1</span> : test2 ? <span>IfBlock2</span> : <span>ElseBlock</span>}
+    </span>
+  );
+}"
+`;
+
 exports[`inside jsx 1`] = `
 "function MyComp() {
   return (

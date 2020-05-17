@@ -89,6 +89,10 @@ export default function transformer(file, api) {
             ret,
           )
         })
+        const isInsideJsx = get(path, 'parentPath.name') === 'children'
+        if (isInsideJsx) {
+          ret = j.jsxExpressionContainer(ret)
+        }
         j(path).replaceWith(ret)
         return
       }

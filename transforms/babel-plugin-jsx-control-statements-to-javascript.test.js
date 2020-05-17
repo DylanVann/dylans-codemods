@@ -98,6 +98,31 @@ defineSnapshotTest(
   `
 function MyComp() {
   return (
+    <span>
+      <Choose>
+        <When condition={test1}>
+          <span>IfBlock1</span>
+        </When>
+        <When condition={test2}>
+          <span>IfBlock2</span>
+        </When>
+        <Otherwise>
+          <span>ElseBlock</span>
+        </Otherwise>
+      </Choose>
+    </span>
+  )
+}
+`,
+  'choose inside element',
+)
+
+defineSnapshotTest(
+  transform,
+  transformOptions,
+  `
+function MyComp() {
+  return (
     <Choose>
       <When condition={test1}>
         <span>IfBlock1</span>
