@@ -12,6 +12,31 @@ const get = (obj, path, def) =>
 
 const getName = (path) => get(path, 'value.openingElement.name.name')
 
+const isEmptyTextChild = (child) =>
+  typeof child.value === 'string' && child.value.trim() === ''
+
+const isNotEmptyTextChild = (child) => !isEmptyTextChild(child)
+
+const getSingleJSXNodeFromChildren = (j, children) => {
+  const filtered = children.filter(isNotEmptyTextChild)
+  if (filtered.length === 1 && filtered[0].type === 'JSXElement') {
+    return filtered[0]
+  }
+  return j.jsxElement(
+    j.jsxOpeningElement(j.jsxIdentifier('React.Fragment')),
+    j.jsxClosingElement(j.jsxIdentifier('React.Fragment')),
+    children,
+  )
+}
+
+const getConditionExpression = (openingElement) => {
+  const attributes = get(openingElement, 'attributes')
+  const conditionAttribute = (attributes || []).find(
+    (v) => get(v, 'name.name') === 'condition',
+  )
+  return get(conditionAttribute, 'value.expression')
+}
+
 /**
  * This codemod converts code written with "babel-plugin-jsx-control-statements"
  * to plain JavaScript.
@@ -24,10 +49,12 @@ const getName = (path) => get(path, 'value.openingElement.name.name')
  *
  * This currently converts:
  * - <If condition={cond}>
+ * - <Choose> / <When> / <Otherwise>
  *
  * Currently does not convert:
  * - Deprecated </Else>
- * - <Choose>, <When>, <Otherwise>
+ * - <For>
+ * - <With>
  *
  * For more info see the tests.
  */
@@ -42,29 +69,33 @@ export default function transformer(file, api) {
     .forEach((path) => {
       const name = getName(path)
       if (name === 'Choose') {
+        const children = get(path, 'value.children').filter(isNotEmptyTextChild)
+        const lastChild = children[children.length - 1]
+        const hasOtherwise =
+          get(lastChild, 'openingElement.name.name') === 'Otherwise'
+        let ret = hasOtherwise
+          ? getSingleJSXNodeFromChildren(j, lastChild.children)
+          : j.identifier('null')
+        const revChildren = [...children]
+        revChildren.reverse()
+        revChildren.forEach((child) => {
+          if (get(child, 'openingElement.name.name') !== 'When') {
+            return
+          }
+          const conditional = getConditionExpression(child.openingElement)
+          ret = j.conditionalExpression(
+            conditional,
+            getSingleJSXNodeFromChildren(j, child.children),
+            ret,
+          )
+        })
+        j(path).replaceWith(ret)
         return
       }
       const children = get(path, 'value.children')
-      const isEmptyText = (child) =>
-        typeof child.value === 'string' && child.value.trim() === ''
-      const filteredChildren = children.filter((v) => !isEmptyText(v))
-      const attributes = get(path, 'value.openingElement.attributes')
-      const conditionAttribute = attributes.find(
-        (v) => get(v, 'name.name') === 'condition',
-      )
-      const condition = conditionAttribute.value.expression
+      const condition = getConditionExpression(path.value.openingElement)
       const left = j.callExpression(j.identifier('Boolean'), [condition])
-      const isOneElement = filteredChildren.length === 1
-      const isJustText =
-        isOneElement && typeof filteredChildren[0].value === 'string'
-      const right =
-        isOneElement && !isJustText
-          ? filteredChildren[0]
-          : j.jsxElement(
-              j.jsxOpeningElement(j.jsxIdentifier('React.Fragment')),
-              j.jsxClosingElement(j.jsxIdentifier('React.Fragment')),
-              children,
-            )
+      const right = getSingleJSXNodeFromChildren(j, children)
       let expression = j.logicalExpression('&&', left, right)
       const isInsideJsx = get(path, 'parentPath.name') === 'children'
       if (isInsideJsx) {

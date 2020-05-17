@@ -91,3 +91,40 @@ function MyComp() {
 `,
   'choose',
 )
+
+defineSnapshotTest(
+  transform,
+  transformOptions,
+  `
+function MyComp() {
+  return (
+    <Choose>
+      <When condition={test1}>
+        <span>IfBlock1</span>
+      </When>
+      <When condition={test2}>
+        <span>IfBlock2</span>
+      </When>
+    </Choose>
+  )
+}
+`,
+  'only when',
+)
+
+defineSnapshotTest(
+  transform,
+  transformOptions,
+  `
+function MyComp() {
+  return (
+    <Choose>
+      <Otherwise>
+        <span>ElseBlock</span>
+      </Otherwise>
+    </Choose>
+  )
+}
+`,
+  'only otherwise',
+)

@@ -2,19 +2,7 @@
 
 exports[`choose 1`] = `
 "function MyComp() {
-  return (
-    <Choose>
-      <When condition={test1}>
-        <span>IfBlock1</span>
-      </When>
-      <When condition={test2}>
-        <span>IfBlock2</span>
-      </When>
-      <Otherwise>
-        <span>ElseBlock</span>
-      </Otherwise>
-    </Choose>
-  )
+  return test1 ? <span>IfBlock1</span> : test2 ? <span>IfBlock2</span> : <span>ElseBlock</span>;
 }"
 `;
 
@@ -34,6 +22,18 @@ exports[`inside jsx 1`] = `
 exports[`just text children 1`] = `
 "function MyComp() {
   return Boolean(thing && otherThing) && <React.Fragment>text</React.Fragment>;
+}"
+`;
+
+exports[`only otherwise 1`] = `
+"function MyComp() {
+  return <span>ElseBlock</span>;
+}"
+`;
+
+exports[`only when 1`] = `
+"function MyComp() {
+  return test1 ? <span>IfBlock1</span> : test2 ? <span>IfBlock2</span> : null;
 }"
 `;
 
