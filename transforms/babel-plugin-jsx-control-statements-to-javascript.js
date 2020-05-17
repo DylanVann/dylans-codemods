@@ -20,12 +20,14 @@ const isNotEmptyTextChild = (child) => !isEmptyTextChild(child)
 const getSingleJSXNodeFromChildren = (j, children) => {
   const filtered = children.filter(isNotEmptyTextChild)
   if (filtered.length === 1 && filtered[0].type === 'JSXElement') {
-    return filtered[0]
+    return j.parenthesizedExpression(filtered[0])
   }
-  return j.jsxElement(
-    j.jsxOpeningElement(j.jsxIdentifier('React.Fragment')),
-    j.jsxClosingElement(j.jsxIdentifier('React.Fragment')),
-    children,
+  return j.parenthesizedExpression(
+    j.jsxElement(
+      j.jsxOpeningElement(j.jsxIdentifier('React.Fragment')),
+      j.jsxClosingElement(j.jsxIdentifier('React.Fragment')),
+      children,
+    ),
   )
 }
 
