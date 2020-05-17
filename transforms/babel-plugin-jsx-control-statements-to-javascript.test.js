@@ -42,3 +42,9 @@ function MyComp() {
   )
 }
 `, 'single child')
+
+defineSnapshotTest(transform, transformOptions, `
+function MyComp() {
+  return <If condition={thing && otherThing}>text</If>
+}
+`, 'just test')

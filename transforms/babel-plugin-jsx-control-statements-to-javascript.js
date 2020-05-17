@@ -13,6 +13,14 @@ const get = (obj, path, def) =>
 /**
  * This codemod converts code written with "babel-plugin-jsx-control-statements"
  * to plain JavaScript.
+ *
+ * e.g. <If condition={thing && otherThing}>output</If> -> Boolean(thing && otherThing) && <React.Fragment>output</React.Fragment>
+ *
+ * This uses Boolean(conditionals) in the output, the reason for this is that
+ * we want to avoid accidentally having falsy values like 0 end up in the
+ * output HTMLoutput.
+ *
+ * For more info see the tests.
  */
 export default function transformer(file, api) {
   const j = api.jscodeshift
@@ -30,8 +38,11 @@ export default function transformer(file, api) {
       )
       const condition = conditionAttribute.value.expression
       const left = j.callExpression(j.identifier('Boolean'), [condition])
+      const isOneElement = filteredChildren.length === 1
+      const isJustText =
+        isOneElement && typeof filteredChildren[0].value === 'string'
       const right =
-        filteredChildren.length === 1
+        isOneElement && !isJustText
           ? filteredChildren[0]
           : j.jsxElement(
               j.jsxOpeningElement(j.jsxIdentifier('React.Fragment')),

@@ -13,6 +13,12 @@ exports[`inside jsx 1`] = `
 }"
 `;
 
+exports[`just test 1`] = `
+"function MyComp() {
+  return Boolean(thing && otherThing) && <React.Fragment>text</React.Fragment>;
+}"
+`;
+
 exports[`outermost element of return statement 1`] = `
 "function MyComp() {
   return Boolean(true) && <React.Fragment>one{'two'}
