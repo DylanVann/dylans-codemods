@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`inside jsx 1`] = `
+"function MyComp() {
+  return (
+    <span>
+      {Boolean(true) && <React.Fragment>one{'two'}
+        <span>three</span>
+        <span>four</span>
+      </React.Fragment>}
+    </span>
+  );
+}"
+`;
+
+exports[`outermost element of return statement 1`] = `
+"function MyComp() {
+  return Boolean(true) && <React.Fragment>one{'two'}
+    <span>three</span>
+    <span>four</span>
+  </React.Fragment>;
+}"
+`;
+
+exports[`single child 1`] = `
+"function MyComp() {
+  return (
+    <span>
+      {Boolean(true) && <span>four</span>}
+    </span>
+  );
+}"
+`;

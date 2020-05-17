@@ -20,7 +20,7 @@
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
     "jest": "26.0.1",
-    "jscodeshift": "npm:@dylanvann/jscodeshift@0.6.4",
+    "jscodeshift": "0.9.0",
     "lodash": "^4.17.15"
   }
 }
