@@ -9,9 +9,9 @@
   "license": "MIT",
   "author": "Dylan Vann <dylan@dylanvann.com> (https://dylanvann.com)",
   "scripts": {
-    "test": "jest",
     "prettier:check": "prettier . --check",
-    "prettier:fix": "prettier . --write"
+    "prettier:fix": "prettier . --write",
+    "test": "jest"
   },
   "prettier": {
     "semi": false,
