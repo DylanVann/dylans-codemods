@@ -10,6 +10,8 @@ const get = (obj, path, def) =>
     ? obj
     : def
 
+const getName = (path) => get(path, 'value.openingElement.name.name')
+
 /**
  * This codemod converts code written with "babel-plugin-jsx-control-statements"
  * to plain JavaScript.
@@ -34,9 +36,14 @@ export default function transformer(file, api) {
   return j(file.source)
     .find(j.JSXElement)
     .filter((path) => {
-      return get(path, 'value.openingElement.name.name') === 'If'
+      const name = getName(path)
+      return name === 'If' || name === 'Choose'
     })
     .forEach((path) => {
+      const name = getName(path)
+      if (name === 'Choose') {
+        return
+      }
       const children = get(path, 'value.children')
       const isEmptyText = (child) =>
         typeof child.value === 'string' && child.value.trim() === ''
