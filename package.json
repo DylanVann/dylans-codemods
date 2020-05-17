@@ -14,6 +14,11 @@
     "scripts": {
         "test": "jest"
     },
+    "prettier": {
+        "semi": false,
+        "singleQuote": true,
+        "trailingComma": "all"
+    },
     "dependencies": {
         "@babel/runtime": "^7.4.2",
         "fs-extra": "^7.0.1",
