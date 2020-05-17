@@ -3,7 +3,10 @@ import transform from './babel-plugin-jsx-control-statements-to-javascript'
 
 const transformOptions = {}
 
-defineSnapshotTest(transform, transformOptions, `
+defineSnapshotTest(
+  transform,
+  transformOptions,
+  `
 function MyComp() {
   return (
     <If condition={true}>
@@ -14,9 +17,14 @@ function MyComp() {
     </If>
   )
 }
-`, 'outermost element of return statement')
+`,
+  'outermost element of return statement',
+)
 
-defineSnapshotTest(transform, transformOptions, `
+defineSnapshotTest(
+  transform,
+  transformOptions,
+  `
 function MyComp() {
   return (
     <span>
@@ -29,9 +37,14 @@ function MyComp() {
     </span>
   )
 }
-`, 'inside jsx')
+`,
+  'inside jsx',
+)
 
-defineSnapshotTest(transform, transformOptions, `
+defineSnapshotTest(
+  transform,
+  transformOptions,
+  `
 function MyComp() {
   return (
     <span>
@@ -41,10 +54,40 @@ function MyComp() {
     </span>
   )
 }
-`, 'single child')
+`,
+  'single child',
+)
 
-defineSnapshotTest(transform, transformOptions, `
+defineSnapshotTest(
+  transform,
+  transformOptions,
+  `
 function MyComp() {
   return <If condition={thing && otherThing}>text</If>
 }
-`, 'just test')
+`,
+  'just text children',
+)
+
+defineSnapshotTest(
+  transform,
+  transformOptions,
+  `
+function MyComp() {
+  return (
+    <Choose>
+      <When condition={test1}>
+        <span>IfBlock1</span>
+      </When>
+      <When condition={test2}>
+        <span>IfBlock2</span>
+      </When>
+      <Otherwise>
+        <span>ElseBlock</span>
+      </Otherwise>
+    </Choose>
+  )
+}
+`,
+  'choose',
+)

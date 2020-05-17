@@ -33,7 +33,9 @@ export default function transformer(file, api) {
   const j = api.jscodeshift
   return j(file.source)
     .find(j.JSXElement)
-    .filter((value) => get(value, 'value.openingElement.name.name') === 'If')
+    .filter((path) => {
+      return get(path, 'value.openingElement.name.name') === 'If'
+    })
     .forEach((path) => {
       const children = get(path, 'value.children')
       const isEmptyText = (child) =>
