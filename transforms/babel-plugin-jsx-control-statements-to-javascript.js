@@ -20,6 +20,13 @@ const get = (obj, path, def) =>
  * we want to avoid accidentally having falsy values like 0 end up in the
  * output HTMLoutput.
  *
+ * This currently converts:
+ * - <If condition={cond}>
+ *
+ * Currently does not convert:
+ * - Deprecated </Else>
+ * - <Choose>, <When>, <Otherwise>
+ *
  * For more info see the tests.
  */
 export default function transformer(file, api) {
