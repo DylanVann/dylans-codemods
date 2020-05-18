@@ -47,7 +47,7 @@ const getConditionExpression = (openingElement) => {
  *
  * This uses Boolean(conditionals) in the output, the reason for this is that
  * we want to avoid accidentally having falsy values like 0 end up in the
- * output HTMLoutput.
+ * output HTML.
  *
  * This currently converts:
  * - <If condition={cond}>
